@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currency to Words Converter</title>
+    <script>
+      function convertCurrencyToWords(amount) {
+        var integerPart = Math.floor(amount);
+        var fractionalPart = (amount - integerPart).toFixed(2);
+
+        let dollars = integerPart;
+        let cents = (fractionalPart % 1).toFixed(2).substring(2);
+
+        
+        let dollarsInWords = convertNumberToWords(parseInt(dollars));
+        let dollarsInCents = convertNumberToWords(parseInt(cents));
+
+        if (dollarsInWords == "Number is too large. Conversion supports up to 12 digits."){
+            alert("Number is too large. Conversion supports up to 12 digits.");
+            return 0;
+        }
+
+        else {
+            let dollarsWord = "Dollars";
+            if (integerPart < 1) {
+                dollarsWord = "Dollar"
+            }
+            console.log('CentValue', cents);
+            
+            let CentsWord = "Cent";
+            if (cents > 1) {
+                console.log('I am Here');
+                CentsWord = "Cents"
+            }
+
+            console.log('Final Result', CentsWord);
+
+            
+            
+            let result = `${dollarsInWords} ${dollarsWord} and ${dollarsInCents} ${CentsWord} `;
+            return result;
+        }
+       
+       
+      }
+
+      function convertNumberToWords(number) {
+        const ones = [
+          "Zero",
+          "One",
+          "Two",
+          "Three",
+          "Four",
+          "Five",
+          "Six",
+          "Seven",
+          "Eight",
+          "Nine",
+        ];
+        const teens = [
+          "Eleven",
+          "Twelve",
+          "Thirteen",
+          "Fourteen",
+          "Fifteen",
+          "Sixteen",
+          "Seventeen",
+          "Eighteen",
+          "Nineteen",
+        ];
+        const tens = [
+          "",
+          "Ten",
+          "Twenty",
+          "Thirty",
+          "Forty",
+          "Fifty",
+          "Sixty",
+          "Seventy",
+          "Eighty",
+          "Ninety",
+        ];
+
+        function convertToWords(num) {
+          if (num === 0) {
+            return "Zero";
+          }
+
+          function convertTwoDigitNumber(num) {
+            if (num < 10) {
+              return ones[num];
+            } else if (num >= 11 && num <= 19) {
+              return teens[num - 11];
+            } else {
+              const tenDigit = Math.floor(num / 10);
+              const oneDigit = num % 10;
+              return (
+                tens[tenDigit] + (oneDigit !== 0 ? " " + ones[oneDigit] : "")
+              );
+            }
+          }
+
+          function convertThreeDigitNumber(num) {
+            const hundredDigit = Math.floor(num / 100);
+            const twoDigitNumber = num % 100;
+
+            let result = "";
+            if (hundredDigit !== 0) {
+              result += ones[hundredDigit] + " Hundred";
+              if (twoDigitNumber !== 0) {
+                result += " and ";
+              }
+            }
+
+            if (twoDigitNumber !== 0) {
+              result += convertTwoDigitNumber(twoDigitNumber);
+            }
+
+            return result;
+          }
+
+          const billion = Math.floor(num / 1000000000);
+          const million = Math.floor((num % 1000000000) / 1000000);
+          const thousand = Math.floor((num % 1000000) / 1000);
+          const remainder = num % 1000;
+
+          let result = "";
+
+          if (billion !== 0) {
+            result += convertThreeDigitNumber(billion) + " Billion";
+          }
+
+          if (million !== 0) {
+            if (result !== "") {
+              result += " ";
+            }
+            result += convertThreeDigitNumber(million) + " Million";
+          }
+
+          if (thousand !== 0) {
+            if (result !== "") {
+              result += " ";
+            }
+            result += convertThreeDigitNumber(thousand) + " Thousand";
+          }
+
+          if (remainder !== 0) {
+            if (result !== "") {
+              result += " ";
+            }
+            result += convertThreeDigitNumber(remainder);
+          }
+
+          return result;
+        }
+
+        // Check if the number has more than 13 digits
+        if (number.toString().length > 12) {
+        return 'Number is too large. Conversion supports up to 12 digits.';
+    }
+
+        return convertToWords(number);
+      }
+
+      function convertAndDisplay() {
+        let number = document.getElementById("amount").value;
+        const words = convertCurrencyToWords(number);
+        console.log(`${number} in words: ${words}`);
+        document.getElementById("result").textContent = words;
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Currency to Words Converter</h1>
+
+    <label for="amount">Enter Amount ($): </label>
+    <input type="number" id="amount" placeholder="0.00" required />
+    <button onclick="convertAndDisplay()">Convert</button>
+
+    <p id="result"></p>
+  </body>
+</html>
