@@ -29,8 +29,15 @@
             if (fractionalPartValue > 1) {
                 FractionalValueSorP = DecimalNamePlural
             }
-            
-            let result = `${IntegerValueInWords} ${IntergerValueSorP} and ${FractionalValueInWords} ${FractionalValueSorP} `;
+            let result =  "";
+            console.log('fractionalPartValue', fractionalPartValue);
+    
+            if(fractionalPartValue == 0){
+                    result = `${IntegerValueInWords} ${IntergerValueSorP}`;
+                }
+            else{
+                    result = `${IntegerValueInWords} ${IntergerValueSorP} and ${FractionalValueInWords} ${FractionalValueSorP} `;
+            }
             return result;
         }
        
@@ -157,8 +164,8 @@
 
       function convertAndDisplay() {
         let number = document.getElementById("amount").value;
-        // const words = convertCurrencyToWords(number, "Dollar", "Dollars", "Cent", "Cents");
-        const words = convertCurrencyToWords(number, "Euro", "Euros", "Cent", "Cents");
+        const words = convertCurrencyToWords(number, "Dollar", "Dollars", "Cent", "Cents");
+        // const words = convertCurrencyToWords(number, "Euro", "Euros", "Cent", "Cents");
         // const words = convertCurrencyToWords(number, "Pound", "Pounds", "Pence", "Pence");
         console.log(`${number} in words: ${words}`);
         document.getElementById("result").textContent = words;
