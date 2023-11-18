@@ -5,40 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Currency to Words Converter</title>
     <script>
-      function convertCurrencyToWords(amount) {
+      function convertCurrencyToWords(amount, IntergerNameSingular, IntergerNameplural, DecimalNameSingular, DecimalNamePlural) {
         var integerPart = Math.floor(amount);
         var fractionalPart = (amount - integerPart).toFixed(2);
-
-        let dollars = integerPart;
-        let cents = (fractionalPart % 1).toFixed(2).substring(2);
+        let fractionalPartValue = (fractionalPart % 1).toFixed(2).substring(2);
 
         
-        let dollarsInWords = convertNumberToWords(parseInt(dollars));
-        let dollarsInCents = convertNumberToWords(parseInt(cents));
+        let IntegerValueInWords = convertNumberToWords(parseInt(integerPart));
+        let FractionalValueInWords = convertNumberToWords(parseInt(fractionalPartValue));
 
-        if (dollarsInWords == "Number is too large. Conversion supports up to 12 digits."){
+        if (IntegerValueInWords == "Number is too large. Conversion supports up to 12 digits."){
             alert("Number is too large. Conversion supports up to 12 digits.");
             return 0;
         }
 
         else {
-            let dollarsWord = "Dollars";
+            let IntergerValueSorP = IntergerNameplural;
             if (integerPart < 1) {
-                dollarsWord = "Dollar"
+                IntergerValueSorP = IntergerNameSingular;
             }
-            console.log('CentValue', cents);
             
-            let CentsWord = "Cent";
-            if (cents > 1) {
-                console.log('I am Here');
-                CentsWord = "Cents"
+            let FractionalValueSorP = DecimalNameSingular ;
+            if (fractionalPartValue > 1) {
+                FractionalValueSorP = DecimalNamePlural
             }
-
-            console.log('Final Result', CentsWord);
-
             
-            
-            let result = `${dollarsInWords} ${dollarsWord} and ${dollarsInCents} ${CentsWord} `;
+            let result = `${IntegerValueInWords} ${IntergerValueSorP} and ${FractionalValueInWords} ${FractionalValueSorP} `;
             return result;
         }
        
@@ -165,7 +157,9 @@
 
       function convertAndDisplay() {
         let number = document.getElementById("amount").value;
-        const words = convertCurrencyToWords(number);
+        // const words = convertCurrencyToWords(number, "Dollar", "Dollars", "Cent", "Cents");
+        const words = convertCurrencyToWords(number, "Euro", "Euros", "Cent", "Cents");
+        // const words = convertCurrencyToWords(number, "Pound", "Pounds", "Pence", "Pence");
         console.log(`${number} in words: ${words}`);
         document.getElementById("result").textContent = words;
       }
